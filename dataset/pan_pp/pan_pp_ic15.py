@@ -14,7 +14,7 @@ from torch.utils import data
 
 ic15_root_dir = './data/ICDAR2015/Challenge4/'
 ic15_train_data_dir = ic15_root_dir + 'ch4_training_images/'
-ic15_train_gt_dir = ic15_root_dir + \ 
+ic15_train_gt_dir = ic15_root_dir + \
                     'ch4_training_localization_transcription_gt/'
 ic15_test_data_dir = ic15_root_dir + 'ch4_test_images/'
 ic15_test_gt_dir = ic15_root_dir + \
@@ -400,26 +400,37 @@ class PAN_PP_IC15(data.Dataset):
             if count ==0:
                 for idx, img_name in enumerate(img_names): 
                     
-                    img_path = data_dir + img_name
-                    img_paths.append(img_path)
+                    
 
                     gt_name = 'gt_' + img_name.split('.')[0] + '.txt'
                     gt_path = gt_dir + gt_name
+                    with open(gt_path,'r') as f:
+                        k = [x for x in f]
+                        if len(k) > 10:
+                            continue
                     gt_paths.append(gt_path)
+                    img_path = data_dir + img_name
+                    img_paths.append(img_path)
 
                 self.img_paths.extend(img_paths)
                 self.gt_paths.extend(gt_paths)
             else:
                 for idx, img_name in enumerate(img_names): 
                     
-                    img_path = data_dir + img_name
-                    img_paths.append(img_path)
+                    
 
                     gt_name = img_name.split('.')[0][2:] 
                     gt_name= str(int(gt_name))
                     gt_name = 'gt_' + gt_name + '.txt' 
                     gt_path = gt_dir + gt_name
+
+                    with open(gt_path,'r') as f:
+                        k = [x for x in f]
+                        if len(k) > 10:
+                            continue
                     gt_paths.append(gt_path)
+                    img_path = data_dir + img_name
+                    img_paths.append(img_path)
 
                 self.img_paths.extend(img_paths)
                 self.gt_paths.extend(gt_paths)
